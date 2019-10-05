@@ -1,0 +1,115 @@
+
+
+using Fraction;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Fraction
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Fraction f1 = new Fraction(5, 1);
+            Fraction f2 = new Fraction(12, 64);
+            Fraction f3 = f1.Add(f2);
+            Console.WriteLine(f3);
+            try
+            {
+                Fraction f4 = new Fraction(10, 0);
+                Console.WriteLine(f4);
+            }
+            catch (Exception) { }
+        }
+    }
+
+    public class Fraction //or internal
+    {
+        public Fraction(int numerator, int denominator)//constructor
+        {
+            if (denominator == 0) throw new ArgumentException("Denominator could be 0");
+            Numerator = numerator;
+            Denominator = denominator;
+        }
+
+        public int Numerator { get; private set; }
+        public int Denominator { get; private set; }//private so that outside the class we can't change it 
+
+        //public double Ratio => Numerator / Denominator; or
+
+        public double Ratio
+        {
+            get
+            {
+                return (double)Numerator / Denominator;//interger division is truncated by defaut 
+            }
+
+        }
+
+        public Fraction Reciprocal
+        {
+            get
+            {
+                return new Fraction(Denominator, Numerator);
+            }
+        }
+
+        public Fraction Negative//or => new Fraction (-Numerator, Denomonator);
+        {
+            get
+            {
+                return new Fraction(-Numerator, Denominator);
+            }
+        }
+
+        public Fraction Add(Fraction other)
+        {
+            return new Fraction(Numerator * other.Numerator, Denominator * other.Denominator);
+        }
+
+        public Fraction Divide(Fraction other) => Add(other.Reciprocal);
+
+        public static Fraction operator +(Fraction left, Fraction right)
+        {
+            return left.Add(right);
+        }
+
+        public static Fraction operator -(Fraction left, Fraction right)
+        {
+            return left.Substract(right);
+        }
+
+        private Fraction Substract(Fraction right)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public static int LeastCommonDenominator(int a, int b)
+        {
+            int num1, num2;
+            if (a > b)
+            {
+                num1 = a; num2 = b;
+            }
+            else
+            {
+                num1 = b; num2 = b;
+            }
+            for (int i = 1; i < num2; i++)
+            {
+                if ((num1 * i) % num2 == 0)
+                {
+                    return num1 * i;
+                }
+            }
+            return num1 * num2;
+        }
+
+    }
+
+
+}
