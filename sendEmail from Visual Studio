@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SendMail
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Enter 0 (OrderRequests), P (PaymentReceived), S (ShipmentNotices), R (RestockNotices)");
+            string input = Console.ReadLine().ToUpper();
+            string folder = null, subject = null; 
+            switch (input)
+            {
+                case "O":
+                    folder = "OrderRequests"; 
+                    subject = "Order Request";
+                    break;
+                case "P":
+                    folder = "PaymentReceived";
+                    subject = "Payment Received"; 
+                    break;
+                case "R":
+                    folder = "ShipmentReceived";
+                    subject = "Shipment Received";
+                    break;
+                case "S":
+                    folder = "ShipmentNotices";
+                    subject = " Order Shipped";
+                    break;
+                default: Console.WriteLine("Nothing to do! Bye."); return;
+            }
+            foreach (string fpath in Directory.GetFiles(folder))
+                SendMessage(fpath, subject);
+        }
+        static void SendMessage(string fileName, string subject)
+        {
+            string body = File.ReadAllText(fileName);
+            MailMessage msg = new MailMessage("sender's email", "receiver's email", subject, body);
+            SmtpClient client = new SmtpClient(". . .");
+            client.Send(msg);       
+        }
+
+    }
+}
