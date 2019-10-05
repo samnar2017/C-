@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TextAnalyzers.Lib;
+s
+namespace WordCounter
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string document = File.ReadAllText("mobydick.txt");
+            WordSearcher searcher = new WordSearcher(document);
+            while (PromptForSearchWord(out string searchWord))
+            {
+                int count = searcher.GetWordCount(searchWord, false);
+                Console.WriteLine($"The word {searchWord} was found {count} time(s).");
+            }
+        }
+
+\
+
+        static bool PromptForSearchWord(out string searchWord)
+        {
+            Console.Write("Please enter a word to search for:");
+            searchWord = Console.ReadLine();
+            return !string.IsNullOrWhiteSpace(searchWord);
+        }
+
+    }
+}
